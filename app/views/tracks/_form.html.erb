@@ -1,0 +1,36 @@
+<% action == :new ? action_url = tracks_url : action_url = track_url(track)%>
+
+<form action="<%= action_url %>" method="post">
+    <%= auth_token %>
+    <% if action == :edit %>
+        <input type="hidden" name="_method" value="patch">
+    <% end %>
+
+    <label for="title">Name:</label>
+    <input type="text" id="title" name="track[title]" value="<%=track.title%>">
+
+    <label for="album">Album:</label>
+    <select name="track[album_id]" id="album">
+        <% album.band.albums.each do |sister_album|%>
+            <option value="<%=sister_album.id%>" <% sister_album.id == album.id ? "selected" : "" %>><%=sister_album.title%></option>
+        <% end %>
+    </select>
+
+    <label for="ord">Track Number:</label>
+    <input type="text" id="ord" name="track[ord]" value="<%= track.ord %>">
+
+    <div>
+        <p>Track Type:</p>
+        <label for="bonus">Bonus</label>
+        <input type="radio" id="bonus" name="track[bonus_track]" value="true" <%= track.bonus_track==true ? "checked" : ""%>>
+        
+        <label for="standard">Standard</label>
+        <input type="radio" id="standard" name="track[bonus_track]" value="false" <%= track.bonus_track==false ? "checked" : ""%>>
+    </div>
+
+    <label for="lyrics">Lyrics:</label>
+    <textarea name="track[lyrics]" id="lyrics" cols="30" rows="10"><%= track.lyrics %></textarea>
+
+    <input type="submit" value="Submit">
+
+</form>
